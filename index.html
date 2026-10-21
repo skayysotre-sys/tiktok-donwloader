@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#020617"/>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27black%27/%3E%3Cg fill=%27none%27 stroke-width=%277%27 stroke-linecap=%27round%27%3E%3Cpath stroke=%27%2325F4EE%27 transform=%27translate(-2 -2)%27 d=%27M38 10V40A10 10 0 1 1 28 30M38 10C38 20 45 26 54 27%27/%3E%3Cpath stroke=%27%23FE2C55%27 transform=%27translate(2 2)%27 d=%27M38 10V40A10 10 0 1 1 28 30M38 10C38 20 45 26 54 27%27/%3E%3Cpath stroke=%27white%27 d=%27M38 10V40A10 10 0 1 1 28 30M38 10C38 20 45 26 54 27%27/%3E%3C/g%3E%3C/svg%3E" />
   <title>TikTok Downloader HD - Animated</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -58,9 +59,47 @@
       #splash { display: none; }
       .enter-card, .enter-item { opacity: 1; animation: none; }
     }
+  
+    /* ===== Layar penuh & responsif ===== */
+    html { height: 100%; -webkit-text-size-adjust: 100%; }
+    body.app-body {
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; align-items: center; justify-content: center;
+      overflow-x: hidden; overflow-y: auto;
+      padding: 0;
+      padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right);
+    }
+    /* HP: kartu memenuhi seluruh layar */
+    .app-card {
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; flex-direction: column; justify-content: center;
+      border-radius: 0; border-width: 0;
+      padding: clamp(1.25rem, 5vw, 2rem);
+    }
+    /* Tablet & komputer: kartu di tengah, ukuran menyesuaikan */
+    @media (min-width: 640px) {
+      body.app-body { padding: 1.5rem; }
+      .app-card {
+        min-height: 0; max-width: 34rem;
+        border-radius: 1.75rem; border-width: 1px;
+        padding: 2rem;
+      }
+    }
+    @media (min-width: 1024px) {
+      .app-card { max-width: 40rem; padding: 2.5rem; }
+    }
+    @media (min-width: 1536px) {
+      .app-card { max-width: 46rem; }
+    }
+    /* Layar HP pendek / mode landscape */
+    @media (max-height: 520px) {
+      .app-card { justify-content: flex-start; }
+    }
+    img, svg { max-width: 100%; }
   </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans">
+<body class="app-body bg-slate-950 text-white relative font-sans">
   <!-- Layar pembuka -->
   <div id="splash">
     <svg viewBox="0 0 64 64" class="splash-logo w-24 h-24" fill="none" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Logo">
@@ -76,7 +115,7 @@
   <div class="glow-bg -top-10 -left-10"></div>
   <div class="glow-bg -bottom-10 -right-10" style="animation-delay: -6s;"></div>
 
-  <div class="enter-card relative z-10 max-w-md w-full bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-slate-800/80 hover:border-slate-700/80 transition-all duration-300">
+  <div class="enter-card app-card relative z-10 w-full bg-slate-900/80 backdrop-blur-xl shadow-2xl border border-slate-800/80 transition-all duration-300">
 
     <div class="text-center mb-8">
       <div class="relative inline-flex items-center justify-center w-24 h-24 rounded-[28px] mb-4 animate-bounce" style="background:linear-gradient(145deg,#1a1a1f,#000);box-shadow:0 10px 40px -8px rgba(37,244,238,.45),0 10px 40px -8px rgba(254,44,85,.35),inset 0 1px 0 rgba(255,255,255,.12);">
@@ -86,7 +125,7 @@
           <g transform="translate(0 0)" stroke="#FFFFFF" style=""><path d="M38 10V40A10 10 0 1 1 28 30"/><path d="M38 10C38 20 45 26 54 27"/></g>
         </svg>
       </div>
-      <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-blue-500 bg-clip-text text-transparent">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-blue-500 bg-clip-text text-transparent">
         TikTok Downloader
       </h1>
       <p class="text-slate-400 text-sm mt-2">Unduh video TikTok tanpa watermark dengan kualitas HD</p>
@@ -122,7 +161,7 @@
 
     <div id="result" class="hidden mt-8 pt-6 border-t border-slate-800 fade-slide-up space-y-4">
       <div class="relative overflow-hidden rounded-2xl group border border-slate-800">
-        <img id="videoCover" src="" alt="Thumbnail" class="w-full h-52 object-cover transform group-hover:scale-105 transition-transform duration-500">
+        <img id="videoCover" src="" alt="Thumbnail" class="w-full h-[38vh] min-h-[200px] max-h-[440px] object-cover transform group-hover:scale-105 transition-transform duration-500">
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent flex items-end p-4">
           <div>
             <h2 id="videoTitle" class="font-semibold text-sm line-clamp-2 text-slate-100"></h2>
