@@ -28,7 +28,9 @@ app.post('/api/download', async (req, res) => {
         title: data.data.title || 'Video TikTok',
         author: `@${data.data.author.unique_id || 'user'}`,
         cover: data.data.cover,
-        downloadUrl: data.data.play
+        downloadUrl: data.data.play,
+        hdUrl: data.data.hdplay || data.data.play,
+        wmUrl: data.data.wmplay || data.data.play
       });
     } else {
       return res.status(400).json({ success: false, message: 'Gagal mengambil video dari link tersebut.' });

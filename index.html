@@ -28,14 +28,55 @@
       from { opacity: 0; transform: translateY(30px) scale(0.95); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
+  
+    /* ===== Animasi masuk website ===== */
+    #splash {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+      background: radial-gradient(circle at 50% 40%, #0f172a 0%, #020617 70%);
+      transition: opacity .7s ease, visibility .7s ease, transform .7s ease;
+    }
+    #splash.hide { opacity: 0; visibility: hidden; transform: scale(1.08); }
+    .splash-logo { animation: logoPop 1s cubic-bezier(0.16, 1, 0.3, 1) both, logoFloat 2.2s ease-in-out 1s infinite; }
+    @keyframes logoPop { from { opacity: 0; transform: scale(.3) rotate(-20deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+    @keyframes logoFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .splash-text { font-weight: 800; letter-spacing: .3em; font-size: 12px; color: #94a3b8; animation: fadeIn .8s ease .4s both; }
+    .splash-bar { width: 160px; height: 4px; border-radius: 999px; background: #1e293b; overflow: hidden; animation: fadeIn .6s ease .5s both; }
+    .splash-bar span { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #25F4EE, #FE2C55); animation: loadBar 1.6s ease-in-out .3s forwards; }
+    @keyframes loadBar { to { width: 100%; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .enter-card { opacity: 0; animation: cardIn .9s cubic-bezier(0.16, 1, 0.3, 1) 1.7s forwards; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(50px) scale(.94); filter: blur(8px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+    .enter-item { opacity: 0; animation: itemIn .6s ease forwards; }
+    .enter-item:nth-child(1) { animation-delay: 2.0s; }
+    .enter-item:nth-child(2) { animation-delay: 2.15s; }
+    .enter-item:nth-child(3) { animation-delay: 2.3s; }
+    @keyframes itemIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      #splash { display: none; }
+      .enter-card, .enter-item { opacity: 1; animation: none; }
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans">
+  <!-- Layar pembuka -->
+  <div id="splash">
+    <svg viewBox="0 0 64 64" class="splash-logo w-24 h-24" fill="none" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Logo">
+      <g transform="translate(-2.2 -2.2)" stroke="#25F4EE" style="mix-blend-mode:screen"><path d="M38 10V40A10 10 0 1 1 28 30"/><path d="M38 10C38 20 45 26 54 27"/></g>
+      <g transform="translate(2.2 2.2)" stroke="#FE2C55" style="mix-blend-mode:screen"><path d="M38 10V40A10 10 0 1 1 28 30"/><path d="M38 10C38 20 45 26 54 27"/></g>
+      <g stroke="#FFFFFF"><path d="M38 10V40A10 10 0 1 1 28 30"/><path d="M38 10C38 20 45 26 54 27"/></g>
+    </svg>
+    <div class="splash-text">MEMUAT...</div>
+    <div class="splash-bar"><span></span></div>
+  </div>
+
 
   <div class="glow-bg -top-10 -left-10"></div>
   <div class="glow-bg -bottom-10 -right-10" style="animation-delay: -6s;"></div>
 
-  <div class="relative z-10 max-w-md w-full bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-slate-800/80 hover:border-slate-700/80 transition-all duration-300">
+  <div class="enter-card relative z-10 max-w-md w-full bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-slate-800/80 hover:border-slate-700/80 transition-all duration-300">
 
     <div class="text-center mb-8">
       <div class="relative inline-flex items-center justify-center w-24 h-24 rounded-[28px] mb-4 animate-bounce" style="background:linear-gradient(145deg,#1a1a1f,#000);box-shadow:0 10px 40px -8px rgba(37,244,238,.45),0 10px 40px -8px rgba(254,44,85,.35),inset 0 1px 0 rgba(255,255,255,.12);">
@@ -100,12 +141,48 @@
         <i data-lucide="download" class="w-5 h-5"></i>
         <span>Download MP4 (Tanpa Watermark)</span>
       </a>
+
+      <a
+        id="downloadHdBtn"
+        href="#"
+        target="_blank"
+        rel="noopener"
+        download="tiktok-video-hd.mp4"
+        class="w-full bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-400 font-semibold py-3.5 rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-pink-500/20 active:scale-[0.98]"
+      >
+        <i data-lucide="sparkles" class="w-5 h-5"></i>
+        <span>Download Video HD (Tanpa Watermark)</span>
+      </a>
+
+      <a
+        id="downloadWmBtn"
+        href="#"
+        target="_blank"
+        rel="noopener"
+        download="tiktok-video-watermark.mp4"
+        class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 font-semibold py-3.5 rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98]"
+      >
+        <i data-lucide="droplet" class="w-5 h-5"></i>
+        <span>Download Video (Dengan Watermark)</span>
+      </a>
+
+      <p class="text-center text-xs text-slate-500">Jika video terbuka di tab baru, tekan lama lalu pilih "Unduh video".</p>
     </div>
 
   </div>
 
   <script>
+    (function () {
+      function closeSplash() {
+        var s = document.getElementById('splash');
+        if (s) { s.classList.add('hide'); setTimeout(function () { if (s.parentNode) s.remove(); }, 800); }
+      }
+      setTimeout(closeSplash, 1900);
+    })();
+  </script>
+  <script>
     lucide.createIcons();
+
 
     async function processVideo() {
       const urlInput = document.getElementById('tiktokUrl').value;
@@ -134,6 +211,9 @@
           document.getElementById('videoTitle').innerText = data.title;
           document.getElementById('videoAuthor').innerText = data.author;
           document.getElementById('downloadBtn').href = data.downloadUrl;
+          document.getElementById('downloadHdBtn').href = data.hdUrl || data.downloadUrl;
+          document.getElementById('downloadWmBtn').href = data.wmUrl || data.downloadUrl;
+          lucide.createIcons();
 
           result.classList.remove('hidden');
 
