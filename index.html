@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27black%27/%3E%3Cg fill=%27none%27 stroke-width=%277%27 stroke-linecap=%27round%27%3E%3Cpath stroke=%27%2325F4EE%27 transform=%27translate(-2 -2)%27 d=%27M38 10V40A10 10 0 1 1 28 30M38 10C38 20 45 26 54 27%27/%3E%3Cpath stroke=%27%23FE2C55%27 transform=%27translate(2 2)%27 d=%27M38 10V40A10 10 0 1 1 28 30M38 10C38 20 45 26 54 27%27/%3E%3Cpath stroke=%27white%27 d=%27M38 10V40A10 10 0 1 1 28 30M38 10C38 20 45 26 54 27%27/%3E%3C/g%3E%3C/svg%3E" />
+  <title>TikTok Downloader HD - Animated</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.4; }
+      50% { transform: scale(1.1) rotate(180deg); opacity: 0.7; }
+    }
+    .glow-bg {
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, rgba(59, 130, 246, 0.3) 50%, transparent 70%);
+      filter: blur(60px);
+      animation: pulseGlow 12s infinite ease-in-out;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .fade-slide-up { animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans">
+
+  <div class="glow-bg -top-10 -left-10"></div>
+  <div class="glow-bg -bottom-10 -right-10" style="animation-delay: -6s;"></div>
+
+  <div class="relative z-10 max-w-md w-full bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-slate-800/80 hover:border-slate-700/80 transition-all duration-300">
+
+    <div class="text-center mb-8">
+      <div class="relative inline-flex items-center justify-center w-24 h-24 rounded-[28px] mb-4 animate-bounce" style="background:linear-gradient(145deg,#1a1a1f,#000);box-shadow:0 10px 40px -8px rgba(37,244,238,.45),0 10px 40px -8px rgba(254,44,85,.35),inset 0 1px 0 rgba(255,255,255,.12);">
+        <svg viewBox="0 0 64 64" class="w-16 h-16" fill="none" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" shape-rendering="geometricPrecision" role="img" aria-label="Logo">
+          <g transform="translate(-2.2 -2.2)" stroke="#25F4EE" style="mix-blend-mode:screen"><path d="M38 10V40A10 10 0 1 1 28 30"/><path d="M38 10C38 20 45 26 54 27"/></g>
+          <g transform="translate(2.2 2.2)" stroke="#FE2C55" style="mix-blend-mode:screen"><path d="M38 10V40A10 10 0 1 1 28 30"/><path d="M38 10C38 20 45 26 54 27"/></g>
+          <g transform="translate(0 0)" stroke="#FFFFFF" style=""><path d="M38 10V40A10 10 0 1 1 28 30"/><path d="M38 10C38 20 45 26 54 27"/></g>
+        </svg>
+      </div>
+      <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-blue-500 bg-clip-text text-transparent">
+        TikTok Downloader
+      </h1>
+      <p class="text-slate-400 text-sm mt-2">Unduh video TikTok tanpa watermark dengan kualitas HD</p>
+    </div>
+
+    <div class="space-y-4">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+          <i data-lucide="link-2" class="w-5 h-5"></i>
+        </div>
+        <input
+          type="url"
+          id="tiktokUrl"
+          placeholder="Tempelkan link video TikTok di sini..."
+          class="w-full pl-11 pr-4 py-3.5 bg-slate-950/60 border border-slate-800 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm transition-all duration-200 placeholder-slate-500"
+        />
+      </div>
+
+      <button
+        onclick="processVideo()"
+        id="btnDownload"
+        class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-500/25 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 group"
+      >
+        <span>Proses Video</span>
+        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+      </button>
+    </div>
+
+    <div id="loading" class="hidden text-center my-8 space-y-3">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent"></div>
+      <p class="text-slate-400 text-sm animate-pulse">Sedang mengambil data video...</p>
+    </div>
+
+    <div id="result" class="hidden mt-8 pt-6 border-t border-slate-800 fade-slide-up space-y-4">
+      <div class="relative overflow-hidden rounded-2xl group border border-slate-800">
+        <img id="videoCover" src="" alt="Thumbnail" class="w-full h-52 object-cover transform group-hover:scale-105 transition-transform duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent flex items-end p-4">
+          <div>
+            <h2 id="videoTitle" class="font-semibold text-sm line-clamp-2 text-slate-100"></h2>
+            <p id="videoAuthor" class="text-xs text-emerald-400 font-medium mt-1"></p>
+          </div>
+        </div>
+      </div>
+
+      <a
+        id="downloadBtn"
+        href="#"
+        target="_blank"
+        download="tiktok-video.mp4"
+        class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 font-semibold py-3.5 rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 active:scale-[0.98]"
+      >
+        <i data-lucide="download" class="w-5 h-5"></i>
+        <span>Download MP4 (Tanpa Watermark)</span>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    async function processVideo() {
+      const urlInput = document.getElementById('tiktokUrl').value;
+      const loading = document.getElementById('loading');
+      const result = document.getElementById('result');
+
+      if (!urlInput) {
+        alert('Silakan masukkan link TikTok terlebih dahulu.');
+        return;
+      }
+
+      loading.classList.remove('hidden');
+      result.classList.add('hidden');
+
+      try {
+        const response = await fetch('/api/download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: urlInput })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          document.getElementById('videoCover').src = data.cover;
+          document.getElementById('videoTitle').innerText = data.title;
+          document.getElementById('videoAuthor').innerText = data.author;
+          document.getElementById('downloadBtn').href = data.downloadUrl;
+
+          result.classList.remove('hidden');
+
+          confetti({ particleCount: 80, spread: 60, origin: { y: 0.8 } });
+        } else {
+          alert(data.message || 'Gagal memproses link TikTok.');
+        }
+      } catch (err) {
+        alert('Terjadi kesalahan pada jaringan/server.');
+      } finally {
+        loading.classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+</html>
