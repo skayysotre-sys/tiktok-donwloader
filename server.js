@@ -41,6 +41,11 @@ app.post('/api/download', async (req, res) => {
   }
 });
 
+// Verifikasi Google Search Console
+app.get('/google890d9bd65a720228.html', (req, res) => {
+  res.type('text/html').send('google-site-verification: google890d9bd65a720228.html');
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
