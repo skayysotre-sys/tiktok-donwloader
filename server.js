@@ -18,7 +18,7 @@ app.post('/api/download', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(url)}`;
+    const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`;
     const response = await axios.get(apiUrl);
     const data = response.data;
 
