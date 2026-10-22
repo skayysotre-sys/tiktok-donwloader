@@ -287,6 +287,7 @@
         <i data-lucide="sparkles" class="w-5 h-5"></i>
         <span>Download Video HD (Tanpa Watermark)</span>
       </a>
+      <p id="hdNote" class="hidden text-center text-xs text-amber-400">Video ini tidak punya versi HD terpisah, jadi tombol HD memakai versi standar.</p>
 
       <a
         id="downloadWmBtn"
@@ -429,6 +430,7 @@
           document.getElementById('videoAuthor').innerText = data.author;
           document.getElementById('downloadBtn').href = data.downloadUrl;
           document.getElementById('downloadHdBtn').href = data.hdUrl || data.downloadUrl;
+          document.getElementById('hdNote').classList.toggle('hidden', data.hasHd !== false);
           document.getElementById('downloadWmBtn').href = data.wmUrl || data.downloadUrl;
           lucide.createIcons();
 

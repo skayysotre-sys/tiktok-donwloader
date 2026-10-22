@@ -18,7 +18,7 @@ app.post('/api/download', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`;
+    const apiUrl = `https://tikwm.com/api/?url=${encodeURIComponent(url)}`;
     const response = await axios.get(apiUrl);
     const data = response.data;
 
@@ -30,7 +30,8 @@ app.post('/api/download', async (req, res) => {
         cover: data.data.cover,
         downloadUrl: data.data.play,
         hdUrl: data.data.hdplay || data.data.play,
-        wmUrl: data.data.wmplay || data.data.play
+        wmUrl: data.data.wmplay || data.data.play,
+        hasHd: Boolean(data.data.hdplay) && data.data.hdplay !== data.data.play
       });
     } else {
       return res.status(400).json({ success: false, message: 'Gagal mengambil video dari link tersebut.' });
