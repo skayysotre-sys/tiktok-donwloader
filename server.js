@@ -46,6 +46,19 @@ app.get('/google890d9bd65a720228.html', (req, res) => {
   res.type('text/html').send('google-site-verification: google890d9bd65a720228.html');
 });
 
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain').send('User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: https://tiktok-downloader-9u61.onrender.com/sitemap.xml\n');
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml').send(
+    '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    '  <url><loc>https://tiktok-downloader-9u61.onrender.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n' +
+    '</urlset>\n'
+  );
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
