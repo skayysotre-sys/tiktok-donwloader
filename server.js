@@ -9,6 +9,55 @@ const PORT = process.env.PORT || process.env.SERVER_PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Hanya izinkan unduhan dari host TikWM/TikTok (mencegah server dipakai sebagai proxy bebas)
+const ALLOWED_HOSTS = ['tikwm.com', 'tiktokcdn.com', 'tiktokcdn-us.com', 'tiktokv.com', 'byteoversea.com', 'muscdn.com'];
+
+function absoluteUrl(u) {
+  if (!u) return u;
+  return u.startsWith('/') ? 'https://www.tikwm.com' + u : u;
+}
+
+function isAllowed(u) {
+  try {
+    const parsed = new URL(u);
+    if (parsed.protocol !== 'https:') return false;
+    return ALLOWED_HOSTS.some(d => parsed.hostname === d || parsed.hostname.endsWith('.' + d));
+  } catch (e) {
+    return false;
+  }
+}
+
+function proxyLink(u, name) {
+  return `/api/file?name=${encodeURIComponent(name)}&url=${encodeURIComponent(absoluteUrl(u))}`;
+}
+
+// Meneruskan file MP4 ke browser sebagai unduhan langsung
+app.get('/api/file', async (req, res) => {
+  const { url, name } = req.query;
+  if (!url || !isAllowed(url)) {
+    return res.status(400).send('Link tidak valid.');
+  }
+  const filename = String(name || 'tiktok-video.mp4').replace(/[^a-zA-Z0-9._-]/g, '_');
+
+  try {
+    const upstream = await axios.get(url, {
+      responseType: 'stream',
+      timeout: 30000,
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    res.setHeader('Content-Type', 'video/mp4');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    if (upstream.headers['content-length']) {
+      res.setHeader('Content-Length', upstream.headers['content-length']);
+    }
+    upstream.data.on('error', () => res.end());
+    upstream.data.pipe(res);
+  } catch (error) {
+    console.error('Error downloading file:', error.message);
+    res.status(502).send('Gagal mengunduh video. Silakan proses ulang videonya.');
+  }
+});
+
 // Endpoint API untuk memproses URL TikTok
 app.post('/api/download', async (req, res) => {
   const { url } = req.body;
@@ -28,9 +77,9 @@ app.post('/api/download', async (req, res) => {
         title: data.data.title || 'Video TikTok',
         author: `@${data.data.author.unique_id || 'user'}`,
         cover: data.data.cover,
-        downloadUrl: data.data.play,
-        hdUrl: data.data.hdplay || data.data.play,
-        wmUrl: data.data.wmplay || data.data.play,
+        downloadUrl: proxyLink(data.data.play, 'tiktok-video.mp4'),
+        hdUrl: proxyLink(data.data.hdplay || data.data.play, 'tiktok-video-hd.mp4'),
+        wmUrl: proxyLink(data.data.wmplay || data.data.play, 'tiktok-video-watermark.mp4'),
         hasHd: Boolean(data.data.hdplay) && data.data.hdplay !== data.data.play
       });
     } else {
